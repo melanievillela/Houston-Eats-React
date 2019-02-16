@@ -9,7 +9,7 @@ class App extends Component {
   state = {
     locations: [],
     active: [null]
-  }
+  }  
 
   componentWillMount(){
     this.loadScript();
@@ -17,17 +17,25 @@ class App extends Component {
 
   //YELP API call
   componentDidMount() {
+    const waiting = document.getElementsByClassName("wait");
+
     const APIkey = `meP7_EKLifhMSzFibob9ZXuag5yhbTVz5C8pWlozlexT_AVeJdZMyC6r0uKS3jyedbcDxXwqZve__pMlgWWLgGALypHauT_FfpmZ7exJEITIrrzbT0QIKZYArWVKXHYx`;
 
     const getRestaurants = () => {
       fetch(`https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?location=Houston&categories=mexican&sort_by=review_count&limit=25`, {
       method: 'GET',
-      //body: JSON.stringify(data),
       headers:{
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${APIkey}`
       }
-    }).then(resp => resp.json())
+    }).then(resp => {
+      //Remove waiting message
+      if(resp.status === 200) {
+        waiting[0].style.display = "none";
+      } 
+      return resp
+    })
+      .then(resp => resp.json())
       .then(result => result.businesses)
       .then(res => 
         this.setState(
@@ -66,20 +74,11 @@ class App extends Component {
 
   //List items
   restaurantClicked = (id) => {
-    //console.log("Location ID: ", location);
     for (let i=0; i<window.markers.length; i++) {
-      //console.log("Window Markers: ", window.markers[i])
       if (id === window.markers[i].id) {
         this.setState(
           {active: id}
         )
-        //console.log("YES!");
-        //console.log("Window Marker ID: ", window.markers[i])
-        //console.log("window.markers: ", window.markers)
-        //console.log("window object: ", window)
-        //console.log("window.mapObject: ", window.mapObject)
-        //console.log("window.infowindow: ", window.infowindow)
-        //window.infowindow.open(window.mapObject, window.markers[i]);
       }
     }
   }
@@ -88,6 +87,7 @@ class App extends Component {
     return (
       <div className="outer-container">
         <div className="sidebar-container flex-column"> 
+          <div className="wait">LOADING</div>
           <Sidebar locations={this.state.locations} zoomInfoWindow={this.restaurantClicked}/>
         </div>
         <div className="map-container" id="map">

@@ -10,6 +10,7 @@ body {
 
 h1 {
     font-family: 'Luckiest Guy', cursive;
+    font-size: 1.75em;
     color: #002147;
     text-shadow: 1.5px 1.5px white;
     text-align: center;
@@ -88,3 +89,70 @@ select {
     background-color: #E57200;
     overflow-y: scroll;
 }
+
+.wait {
+    position: absolute;
+    left: 0;
+    width: 35%;
+    height: 100%;
+    z-index: 100;
+    writing-mode: vertical-rl;
+    padding-top: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 6em;
+    transform: rotate(-15deg);
+    color: #002147;
+    /*Animations*/
+    animation-name: resize;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes resize {
+    50%  {font-size: 4em;}
+    100% {font-size: 2em;}
+}
+
+@media only screen and (max-width: 1000px) {
+    .map-container {
+        width: 100%;
+        max-height: 50%;
+    }
+
+    .outer-container {
+        flex-direction: column;
+    }
+
+    .sidebar-container {        
+        width: 100%;
+        height: 50%;
+    }
+
+    .wait {
+        width: 50%;
+        left: 25%;
+    }
+  }
+
+  @media only screen and (max-width: 400px) {
+    h1 {
+        font-size: 1.5em;
+    }
+    
+    .heading {
+        min-height: 125px;
+    }
+
+    .restaurant-list {
+        max-width: 275px;
+    }
+
+    .wait {
+        width: 30%;
+    }
+  }  
